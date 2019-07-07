@@ -138,13 +138,13 @@ class Solution:
         global maxcol, maxrow, mincol, minrow
 
         self.Map[pos.col][pos.row] = EMPTY
-        # for i in range(20, 60):
-        #     for j in range(20, 60):
-        #         if (i == pos.col and j == pos.row):
-        #             print(9 - self.Map[i][j], end='')
-        #         else:
-        #             print(self.Map[i][j], end='')
-        #     print("")
+        for i in range(20, 60):
+            for j in range(20, 60):
+                if (i == pos.col and j == pos.row):
+                    print(9 - self.Map[i][j], end='')
+                else:
+                    print(self.Map[i][j], end='')
+            print("")
         # for i  in range(20 , 60) :
         #     for j in range(20, 60) :
         #         if (i== pos.col and j==pos.row ):
@@ -205,14 +205,14 @@ class Solution:
                     if j > maxrow:
                         maxrow = j
 
-        if maxcol - mincol == 9 and maxrow - minrow == 19:
+        if maxcol - mincol == 9:
             for j in range(0, NUM_ROWS):
                 self.Map[mincol - 1][j] = BLOCK
                 self.Map[maxcol + 1][j] = BLOCK
             for i in range(0, NUM_COLS):
                 self.Map[i][minrow - 1] = BLOCK
                 self.Map[i][maxrow + 1] = BLOCK
-        if maxcol - mincol == 19 and maxrow - minrow == 9:
+        if maxcol - mincol == 19:
             for j in range(0, NUM_ROWS):
                 self.Map[mincol - 1][j] = BLOCK
                 self.Map[maxcol + 1][j] = BLOCK
