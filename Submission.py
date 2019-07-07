@@ -111,7 +111,7 @@ class Solution:
                 (f_len, f_move) = self.NearestCost(fp, direction, cost + 1, search_depth - 1)
                 col, row = (direction.col, direction.row)
                 if ((col, row) in self.visit[fp.col][fp.row]):
-                    f_len = f_len + INF
+                    f_len = f_len + 10
                 f_len = f_len + 1
                 (l_len, l_move) = self.NearestCost(posx, update_dir(direction, LEFT), cost + 1, search_depth - 1)
                 l_len = l_len + 1
@@ -143,14 +143,18 @@ class Solution:
             front_object = TARGET
         else:
             front_object = BLOCK
- #       self.fuelBefore = self.fuelNow
- #       self.fuelNow = api.current_fuel()
+        self.fuelBefore = self.fuelNow
+        self.fuelNow = api.current_fuel()
 
- #       if (self.fuelBefore- self.fuelNow>7): # got shot!!! ESCAPE
- #           if (api.lidar_back()>1 and (api.lidar_left() or api.lidar_right()) ):
- #               api.move_backward()
+        #if (self.fuelBefore- self.fuelNow>7): # got shot!!! ESCAPE
+        #    if (api.lidar_back()>1 and (api.lidar_left()==1 or api.lidar_right()==1 ) ):
+        #        api.move_backward()
         # Todo: Write your code here!
         # front (no turn)
+
+        # Another scaping strategy
+        #if (api.lidar_left() == 1  and api.lidar_right()==1 and api.lidar_front() > 1 ):
+        #    api.move_forward()
         tempdir = tankdir
         for i in range(1, api.lidar_front()):
             self.Map[pos.col + (i * tempdir.col)][pos.row + (i * tempdir.row)] = EMPTY
@@ -214,6 +218,7 @@ class Solution:
 
         # print( "position", pos.col, pos.row, tankdir.col, tankdir.row,
         #    "lf", api.lidar_front(), "lb", api.lidar_back(), "ll", api.lidar_left(), "lr", api.lidar_right())
+        self.visit[pos.col][pos.row].extend((tankdir.col, tankdir.row))
         if (api.identify_target() and api.lidar_front() < 6):
             api.fire_cannon()
         else:
@@ -222,7 +227,6 @@ class Solution:
             # print("best move", (dist, move))
             if (move == FORWARD):
                 api.move_forward()
-                self.visit[pos.col][pos.row].extend((tankdir.col, tankdir.row))
                 x = self.pos_forward(pos, tankdir, 1)
                 pos.col = x.col
                 pos.row = x.row
