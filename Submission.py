@@ -222,7 +222,7 @@ class Solution:
 
         # print( "position", pos.col, pos.row, tankdir.col, tankdir.row,
         #    "lf", api.lidar_front(), "lb", api.lidar_back(), "ll", api.lidar_left(), "lr", api.lidar_right())
-        if (api.identify_target() and api.lidar_front() < 5):
+        if (api.identify_target() and api.lidar_front() < 6):
             api.fire_cannon()
         else:
             maxdep = MAX_DEPTH  # api.current_fuel()
