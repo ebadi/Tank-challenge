@@ -40,7 +40,7 @@ TARGET = 4
 BLOCK = 1
 OBJECT = 0
 EMPTY = 3
-MAX_DEPTH = 8
+MAX_DEPTH = 7
 INF = 9999
 
 pos = POS(40, 40)
@@ -80,7 +80,7 @@ class Solution:
         # If you need initialization code, you can write it here!
         # Do not remove.
         self.Map = [[OBJECT for x in range(NUM_ROWS)] for y in range(NUM_COLS)]
-        self.visit = [[0 for x in range(NUM_ROWS)] for y in range(NUM_COLS)]
+        self.visit = [[[] for x in range(NUM_ROWS)] for y in range(NUM_COLS)]
 
     def pos_forward(self, posz, direction, step):
         return POS(posz.col + (direction.col * step), posz.row + (direction.row * step))
@@ -109,8 +109,10 @@ class Solution:
                 fp = self.pos_forward(posx, direction, 1)
 
                 (f_len, f_move) = self.NearestCost(fp, direction, cost + 1, search_depth - 1)
-                f_len = f_len + 1 + (self.visit[fp.col][fp.row])
-
+                col,row= (direction.col, direction.row)
+                if ( (col,row) in self.visit[fp.col][fp.row]) :
+                    f_len = f_len + INF
+                f_len = f_len + 1
                 (l_len, l_move) = self.NearestCost(posx, update_dir(direction, LEFT), cost + 1, search_depth - 1)
                 l_len = l_len + 1
                 (r_len, r_move) = self.NearestCost(posx, update_dir(direction, RIGHT), cost + 1, search_depth - 1)
@@ -218,11 +220,9 @@ class Solution:
                 self.Map[i][minrow - 1] = BLOCK
                 self.Map[i][maxrow + 1] = BLOCK
 
-        # print(
-        #    "position", pos.col, pos.row, tankdir.col, tankdir.row, "lf", api.lidar_front(), "lb", api.lidar_back(),
-        #    "ll",
-        #    api.lidar_left(), "lr", api.lidar_right())
-        if (api.identify_target() and api.lidar_front() < 5):
+        # print( "position", pos.col, pos.row, tankdir.col, tankdir.row,
+        #    "lf", api.lidar_front(), "lb", api.lidar_back(), "ll", api.lidar_left(), "lr", api.lidar_right())
+        if (api.identify_target() and api.lidar_front() < 4):
             api.fire_cannon()
         else:
             maxdep = MAX_DEPTH  # api.current_fuel()
@@ -230,7 +230,7 @@ class Solution:
             # print("best move", (dist, move))
             if (move == FORWARD):
                 api.move_forward()
-                self.visit[pos.col][pos.row] += 1
+                self.visit[pos.col][pos.row].extend((tankdir.col, tankdir.row))
                 x = self.pos_forward(pos, tankdir, 1)
                 pos.col = x.col
                 pos.row = x.row
