@@ -138,7 +138,20 @@ class Solution:
         global maxcol, maxrow, mincol, minrow
 
         self.Map[pos.col][pos.row] = EMPTY
-
+        for i in range(20, 60):
+            for j in range(20, 60):
+                if (i == pos.col and j == pos.row):
+                    print(9 - self.Map[i][j], end='')
+                else:
+                    print(self.Map[i][j], end='')
+            print("")
+        # for i  in range(20 , 60) :
+        #     for j in range(20, 60) :
+        #         if (i== pos.col and j==pos.row ):
+        #             print(9-self.visit[i][j], end='')
+        #         else:
+        #             print(self.visit[i][j], end='')
+        #     print("")
         if (api.identify_target()):
             front_object = TARGET
         else:
