@@ -109,8 +109,8 @@ class Solution:
                 fp = self.pos_forward(posx, direction, 1)
 
                 (f_len, f_move) = self.NearestCost(fp, direction, cost + 1, search_depth - 1)
-                col,row= (direction.col, direction.row)
-                if ( (col,row) in self.visit[fp.col][fp.row]) :
+                col, row = (direction.col, direction.row)
+                if ((col, row) in self.visit[fp.col][fp.row]):
                     f_len = f_len + INF
                 f_len = f_len + 1
                 (l_len, l_move) = self.NearestCost(posx, update_dir(direction, LEFT), cost + 1, search_depth - 1)
@@ -138,25 +138,17 @@ class Solution:
         global maxcol, maxrow, mincol, minrow
 
         self.Map[pos.col][pos.row] = EMPTY
-        for i in range(20, 60):
-            for j in range(20, 60):
-                if (i == pos.col and j == pos.row):
-                    print(9 - self.Map[i][j], end='')
-                else:
-                    print(self.Map[i][j], end='')
-            print("")
-        # for i  in range(20 , 60) :
-        #     for j in range(20, 60) :
-        #         if (i== pos.col and j==pos.row ):
-        #             print(9-self.visit[i][j], end='')
-        #         else:
-        #             print(self.visit[i][j], end='')
-        #     print("")
+
         if (api.identify_target()):
             front_object = TARGET
         else:
             front_object = BLOCK
+ #       self.fuelBefore = self.fuelNow
+ #       self.fuelNow = api.current_fuel()
 
+ #       if (self.fuelBefore- self.fuelNow>7): # got shot!!! ESCAPE
+ #           if (api.lidar_back()>1 and (api.lidar_left() or api.lidar_right()) ):
+ #               api.move_backward()
         # Todo: Write your code here!
         # front (no turn)
         tempdir = tankdir
